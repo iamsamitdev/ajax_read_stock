@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Stock</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    
+</head>
+<body>
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-3">Read product from stock api</h1>
+        </div>
+    </div>
+
+    <!-- สร้างตารางแสดงสินค้า -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Barcode</th>
+                <th>Qty</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+
+    <script>
+        $(function(){
+            // alert("OK");
+            // การเขียน AJAX เพื่อโหลดข้อมูลจาก API
+            $.ajax({
+                headers:{
+                    "Authorization": "Basic " + btoa("admin" + ":" + "1234")
+                },
+                url:"http://localhost/stockrestapi/public/products",
+                method:"GET",
+                dataType:"json",
+                success:function(result){
+                    // alert(JSON.stringify(result));
+                    var data = JSON.parse(JSON.stringify(result));
+
+                    // Loop ทั้งหมดออกมาแสดง
+                    var trstring = "";
+                    $.each(data, function (key, val) {
+                        trstring += `<tr>
+                                            <td>${val.id}</td>
+                                            <td>${val.product_name}</td>
+                                            <td>${val.product_barcode}</td>
+                                            <td>${val.product_qty}</td>
+                                            <td>${val.product_price}</td>
+                                        </tr>`
+                    });
+                    
+                    $("table tbody").html(trstring);
+                }
+
+            });
+        });
+    </script>
+</body>
+</html>
